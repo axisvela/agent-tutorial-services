@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: Synthetic Order Review API
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8765
+security:
+  - fixtureToken: []
+paths:
+  /healthz:
+    get:
+      security: []
+      responses:
+        '200':
+          description: Health and fixture version
+  /v1/orders/{order_id}:
+    parameters:
+      - $ref: '#/components/parameters/orderId'
+    get:
+      responses:
+        '200':
+          description: Synthetic order with id, tenant, status and shipment
+        '401':
+          description: Missing or invalid fixture token
+        '403':
+          description: Token cannot access the order tenant
+        '404':
+          description: Order not found
+  /v1/orders/{order_id}/drafts:
+    parameters:
+      - $ref: '#/components/parameters/orderId'
+    post:
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [recommendation]
+              properties:
+                recommendation:
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+      responses:
+        '201':
+          description: Created in-memory draft with id, order_id, recommendation and draft_only status
+        '200':
+          description: Identical draft replay for tenant, order and idempotency key
+        '400':
+          description: Invalid JSON, fields, key or body length (maximum 4096 bytes)
+        '401':
+          description: Missing or invalid fixture token
+        '403':
+          description: Token cannot access the order tenant
+        '404':
+          description: Order not found
+        '409':
+          description: Same key with different recommendation
+        '503':
+          description: Draft store dependency unavailable; no draft created
+components:
+  securitySchemes:
+    fixtureToken:
+      type: http
+      scheme: bearer
+      description: Public local fixture tokens demo-a-token and demo-b-token; not production credentials
+  parameters:
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [order-100, order-200]
