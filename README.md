@@ -87,6 +87,22 @@ Each enabled client is checked for success, Agent policy denial, independent
 server denial and dependency failure. Core's tutorial CI pins this backend to
 an immutable commit so neither repository needs to execute an unreviewed `main`.
 
+## Recorded Verification
+
+On 2026-11-22, standalone backend tests passed in
+[CI run 45032761254](https://github.com/axisvela/agent-tutorial-services/actions/runs/45032761254)
+at service revision `8b7820e`.
+
+Core [CI run 45033109188](https://github.com/axisvela/praxo-core/actions/runs/45033109188)
+at Core `8b0593bb` pinned that service revision and passed all four unittest
+methods, including Python, TypeScript and Java native CLI clients against a real
+ephemeral loopback service. Each client exercised successful draft creation,
+Agent policy denial, independent server denial and unavailable draft storage.
+Clients used published PyPI `0.10.0`, npm `0.9.0` and Maven Central `0.11.0`.
+Java mock/Web JUnit passed separately. These are deterministic maintainer-run
+checks, not a live model, public endpoint, production deployment, or independent
+consumer. Source and API availability should not be confused with those claims.
+
 ## Boundaries
 
 - In-memory drafts disappear on restart; this is not a database or durable ledger.
