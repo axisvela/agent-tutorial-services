@@ -110,6 +110,15 @@ Java mock/Web JUnit passed separately. These are deterministic maintainer-run
 checks, not a live model, public endpoint, production deployment, or independent
 consumer. Source and API availability should not be confused with those claims.
 
+C# follow-up: Core `ae953050` pinned backend `cd08b09` in
+[run 45034303513](https://github.com/axisvela/praxo-core/actions/runs/45034303513).
+All five unittest methods passed, including four native CLI clients and the
+C# ASP.NET Core Web entry against a real backend. C# used NuGet `0.10.0` and
+.NET 8; its standalone scripted-transport/Web self-tests also passed separately.
+The Web path verifies authentication denial, successful draft, idempotent replay
+and store failure. This is deterministic loopback evidence, not production
+identity, a live model or public hosting.
+
 ## Boundaries
 
 - In-memory drafts disappear on restart; this is not a database or durable ledger.
