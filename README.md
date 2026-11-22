@@ -5,7 +5,7 @@ locally runnable, with no model credentials or third-party Python dependencies.
 This repository provides business APIs, not an agent loop or a product platform.
 
 The first service supports order review. It is used by the Python, TypeScript,
-and Java [PRAXO-CORE tutorials](https://github.com/axisvela/praxo-core/tree/main/language).
+Java and C# [PRAXO-CORE tutorials](https://github.com/axisvela/praxo-core/tree/main/language).
 Clients keep their native Core, tool registry, policy and model adapters. Other
 frameworks can use the same HTTP API without installing Core in this service.
 
@@ -81,6 +81,13 @@ published package instead. TypeScript resolves the installed tutorial package.
 Java client integration is opt-in: build its tutorial and set
 `PRAXO_JAVA_CLASSPATH` to its compiled classes plus runtime dependency jars.
 The `JAVA` variable optionally selects a launcher executable.
+
+For C#, build `language/csharp/Tutorial/order-review/OrderReview.csproj` and set
+`PRAXO_DOTNET_DLL` to the absolute compiled `Praxo.OrderReview.dll` path.
+`DOTNET` optionally selects the .NET launcher. This enables both C# CLI checks
+and a real ASP.NET Core Web entry against the local business service. The Web
+test covers missing-credential denial, successful draft creation, replay and
+dependency failure, and terminates its child process even on failure.
 
 Without `PRAXO_CORE_REPO`, native-client integration is skipped, not passed.
 Each enabled client is checked for success, Agent policy denial, independent
